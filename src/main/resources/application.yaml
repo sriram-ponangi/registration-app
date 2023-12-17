@@ -1,0 +1,38 @@
+server:
+  port: 8089
+  servlet:
+    context-path: '/api'
+
+app:
+  name: registration-app
+  instance-id: ${random.uuid}
+  environment: local
+  hostname: localhost
+  url: 'http://${app.hostname}:${server.port}${server.servlet.context-path}'
+
+ip-validation-api: "http://ip-api.com/json/"
+
+management:
+  info:
+    env:
+      enabled: true
+    build:
+      enabled: false
+  endpoint:
+    health:
+      show-details: ALWAYS
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - metrics
+
+info:
+  name: "${app.name}"
+  instanceId: "${app.instance-id}"
+  environment: "${app.environment}"
+  swagger-ui:  "${app.url}/swagger-ui/index.html"
+  openapi-docs:  "${app.url}/v3/api-docs"

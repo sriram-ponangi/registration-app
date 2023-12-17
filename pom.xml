@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>registration-app</artifactId>
+    <version>${revision}</version>
+    <name>registration-app</name>
+    <description>Demo project for Spring Boot to create registration API</description>
+
+    <properties>
+        <final.artifact.name>registration-app</final.artifact.name>
+        <revision>${major.version}.${minor.version}.${patch.version}</revision>
+        <major.version>1</major.version>
+        <minor.version>0</minor.version>
+        <patch.version>0</patch.version>
+        <java.version>17</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${final.artifact.name}-${revision}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/example/registration/configs/**/*</exclude>
+                        <exclude>com/example/registration/RegistrationApplication.*</exclude>
+                        <exclude>com/example/registration/exceptions/**/*</exclude>
+                        <exclude>com/example/registration/models/**/*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>coverage-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>coverage-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>coverage-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>CLASS</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>95%</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>7.0.0</version>
+
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                    <execution>
+                        <id>validate-the-git-infos</id>
+                        <goals>
+                            <goal>validateRevision</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dateFormat>yyyy MMM dd HH:mm:ss.SSS a zzz</dateFormat>
+                    <dateFormatTimeZone>UTC</dateFormatTimeZone>
+                    <!-- If enabled (set to `true`) the plugin prints some more verbose information during
+                        the build (e.g. a summary of all collected properties when it's done). -->
+                    <verbose>true</verbose>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/META-INF/git-info.json
+                    </generateGitPropertiesFilename>
+                    <format>json</format>
+                    <!--
+                        Specify whether the plugin should fail when a .git directory cannot be found.
+                        When set to `false` and no .git directory is found the plugin will skip execution.
+                    -->
+                    <failOnNoGitDirectory>true</failOnNoGitDirectory>
+                    <!--
+                        By default, the plugin will fail the build if unable to obtain enough data for a complete
+                        run, if you don't care about this, you may want to set this value to false.
+                    -->
+                    <failOnUnableToExtractRepoInfo>true</failOnUnableToExtractRepoInfo>
+
+                    <includeOnlyProperties>
+                        <!-- Represents the current branch name. -->
+                        <includeOnlyProperty>git.branch</includeOnlyProperty>
+                        <!-- Represents the hostname where the properties have been generated. -->
+                        <includeOnlyProperty>git.build.host</includeOnlyProperty>
+                        <!-- Represents the (formatted) timestamp when the last build was executed.
+                        If written to the file represents the latest build time when that file was written / updated. -->
+                        <includeOnlyProperty>git.build.time</includeOnlyProperty>
+                        <!-- Represents the git username that is configured where the properties have been generated. -->
+                        <includeOnlyProperty>git.build.user.name</includeOnlyProperty>
+                        <!-- Represents the project version of the current maven project. -->
+                        <includeOnlyProperty>git.build.version</includeOnlyProperty>
+                        <!-- Represents the name of the closest available tag. The closest tag may depend on your git
+                        describe config that may or may not take lightweight tags into consideration. -->
+                        <includeOnlyProperty>git.closest.tag.name</includeOnlyProperty>
+                        <!-- Represents the (formatted) timestamp when the commit has been originally performed. -->
+                        <includeOnlyProperty>git.commit.author.time</includeOnlyProperty>
+                        <!-- Represents the (formatted) timestamp when the commit has been performed. -->
+                        <includeOnlyProperty>git.commit.committer.time</includeOnlyProperty>
+                        <!-- Represents the abbreviated (shorten version) commit hash. -->
+                        <includeOnlyProperty>git.commit.id.abbrev</includeOnlyProperty>
+                        <!-- Represents an object a human-readable name based on a the commit. -->
+                        <includeOnlyProperty>git.commit.id.describe</includeOnlyProperty>
+                        <!-- Represents the same value as git.commit.id.describe , just with the git hash part removed
+                        (the g2414721 part from git describe). -->
+                        <includeOnlyProperty>git.commit.id.describe-short</includeOnlyProperty>
+                        <!-- Represents the same value as git.commit.id.describe , just with the git hash part removed -->
+                        <includeOnlyProperty>git.commit.id.full</includeOnlyProperty>
+                        <!-- Represents the raw body (unwrapped subject and body) of the commit message -->
+                        <includeOnlyProperty>git.commit.message.full</includeOnlyProperty>
+                        <!-- Represents the subject of the commit message -->
+                        <includeOnlyProperty>git.commit.message.short</includeOnlyProperty>
+                        <!-- Represents the (formatted) timestamp when the commit has been performed. -->
+                        <includeOnlyProperty>git.commit.time</includeOnlyProperty>
+                        <!-- Represents the username of the user who performed the commit. -->
+                        <includeOnlyProperty>git.commit.user.name</includeOnlyProperty>
+                        <!-- Represents the URL of the remote repository for the current git project. -->
+                        <includeOnlyProperty>git.remote.origin.url</includeOnlyProperty>
+                        <!-- Holds a project specific build number -->
+                        <includeOnlyProperty>git.build.number</includeOnlyProperty>
+                    </includeOnlyProperties>
+
+                    <commitIdGenerationMode>full</commitIdGenerationMode>
+
+                    <gitDescribe>
+                        <skip>false</skip>
+                        <always>true</always>
+                        <dirty>-dirty</dirty>
+                        <tags>false</tags>
+                        <forceLongFormat>false</forceLongFormat>
+                    </gitDescribe>
+
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+</project>
