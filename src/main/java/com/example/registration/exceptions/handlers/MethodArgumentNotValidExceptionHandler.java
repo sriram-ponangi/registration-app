@@ -24,7 +24,7 @@ public class MethodArgumentNotValidExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidExceptions(MethodArgumentNotValidException ex) {
         List<String> errors = new ArrayList<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.add("Validation failed for " + fieldName + ". " + errorMessage);

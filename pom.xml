@@ -162,8 +162,7 @@
                         the build (e.g. a summary of all collected properties when it's done). -->
                     <verbose>true</verbose>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/META-INF/git-info.json
-                    </generateGitPropertiesFilename>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/META-INF/git-info.json</generateGitPropertiesFilename>
                     <format>json</format>
                     <!--
                         Specify whether the plugin should fail when a .git directory cannot be found.
