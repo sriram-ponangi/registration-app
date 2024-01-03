@@ -31,3 +31,10 @@ After starting the registration app you can:
 
 > ### Task-5: Write Unit Tests
 - Need to have JUnit Tests
+
+
+
+Need to run this in jenkins container:
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+And approve the jenkins dsl script
